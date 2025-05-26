@@ -1,18 +1,27 @@
 import Question from "./Question";
-import {useState} from 'react';
+import {useReducer} from 'react';
+
+const initialState = {
+    currentQuestionIndex: 0,
+    questions: [],
+};
+
+const reducer = (state, action) => {
+    if(action.type === 'NEXT_QUESTION') {
+        return {...state, currentQuestionIndex: state.currentQuestionIndex+1};
+    }
+    return state;
+};
 
 const Quiz = () => {
-    const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
-    const testClick = () => {
-        console.log('test click')
-        setCurrentQuestionIndex(currentQuestionIndex + 1);
-    }
+    const [state, dispatch] = useReducer(reducer, initialState)
+ 
     return (
     <div className="quiz">
         <div>
             <div className="score">Question 1/8</div> 
             <Question />
-            <div className="next-button" onClick={testClick}>Next Question {currentQuestionIndex} </div>
+            <div className="next-button" onClick={()=>dispatch({type: 'NEXT_QUESTION'})}>Next Question </div>
         </div>
     </div>
 
